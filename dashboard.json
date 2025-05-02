@@ -1,0 +1,757 @@
+{
+  "description": "Dashboard for monitoring Temporal applications",
+  "layout": [
+    {
+      "h": 4,
+      "i": "workflow-started",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "h": 4,
+      "i": "workflow-completed",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 0
+    },
+    {
+      "h": 4,
+      "i": "worker-slots",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 4
+    },
+    {
+      "h": 4,
+      "i": "java-metrics",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 4
+    },
+    {
+      "h": 6,
+      "i": "badcfff9-9671-49f6-8a69-a99bb3152359",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 0,
+      "y": 8
+    },
+    {
+      "h": 6,
+      "i": "586b688a-563d-4865-9dc5-21ef887ab247",
+      "moved": false,
+      "static": false,
+      "w": 6,
+      "x": 6,
+      "y": 8
+    }
+  ],
+  "name": "Temporal Applications",
+  "panelMap": {},
+  "tags": [
+    "temporal",
+    "workflows"
+  ],
+  "title": "Temporal Applications Dashboard",
+  "uploadedGrafana": false,
+  "variables": {},
+  "version": "v4",
+  "widgets": [
+    {
+      "bucketCount": 30,
+      "bucketWidth": 0,
+      "columnUnits": {},
+      "description": "Count of workflow executions started",
+      "fillSpans": false,
+      "id": "workflow-started",
+      "isStacked": false,
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "aggregateAttribute": {
+                "dataType": "float64",
+                "id": "temporal_workflow_started--float64----true",
+                "isColumn": true,
+                "isJSON": false,
+                "key": "temporal_workflow_started",
+                "type": ""
+              },
+              "aggregateOperator": "rate",
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "filters": {
+                "items": [],
+                "op": "AND"
+              },
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "service_name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "service_name",
+                  "type": "tag"
+                }
+              ],
+              "having": [],
+              "legend": "{{service_name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "reduceTo": "sum",
+              "spaceAggregation": "sum",
+              "stepInterval": 60,
+              "timeAggregation": "rate"
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "12d7fc86-a7e9-4447-98f3-b8136f56fae4",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Workflow Count",
+            "name": "A",
+            "query": "sum(workflow_started_count_total)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "stackedBarChart": false,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Workflow Started",
+      "yAxisUnit": "none"
+    },
+    {
+      "bucketCount": 30,
+      "bucketWidth": 0,
+      "columnUnits": {},
+      "description": "Total count of workflow executions completed",
+      "fillSpans": false,
+      "id": "workflow-completed",
+      "isStacked": false,
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "aggregateAttribute": {
+                "dataType": "float64",
+                "id": "temporal_workflow_completed--float64----true",
+                "isColumn": true,
+                "isJSON": false,
+                "key": "temporal_workflow_completed",
+                "type": ""
+              },
+              "aggregateOperator": "increase",
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "filters": {
+                "items": [],
+                "op": "AND"
+              },
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "service_name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "service_name",
+                  "type": "tag"
+                }
+              ],
+              "having": [],
+              "legend": "{{service_name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "reduceTo": "sum",
+              "spaceAggregation": "sum",
+              "stepInterval": 60,
+              "timeAggregation": "increase"
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "18b7e0fc-71b4-416a-9a25-5075da58d346",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Completed Workflow Count",
+            "name": "A",
+            "query": "sum(workflow_completed_count_total) by (workflow_type, namespace)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "stackedBarChart": false,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Workflow Completed Count",
+      "yAxisUnit": "none"
+    },
+    {
+      "description": "Workflow success and failure counts",
+      "id": "workflow-success-failed",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Success",
+            "name": "A",
+            "query": "sum(temporal_workflow_success)"
+          },
+          {
+            "disabled": false,
+            "legend": "Failed",
+            "name": "B",
+            "query": "sum(temporal_workflow_failed)"
+          },
+          {
+            "disabled": false,
+            "legend": "Timeout",
+            "name": "C",
+            "query": "sum(temporal_workflow_timeout)"
+          },
+          {
+            "disabled": false,
+            "legend": "Canceled",
+            "name": "D",
+            "query": "sum(temporal_workflow_canceled)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Workflow Success vs Failures",
+      "yAxisUnit": "none"
+    },
+    {
+      "description": "Service requests count",
+      "id": "service-requests",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Service Requests",
+            "name": "A",
+            "query": "sum(temporal_service_requests)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Service Requests",
+      "yAxisUnit": "none"
+    },
+    {
+      "description": "Service errors count",
+      "id": "service-errors",
+      "isStacked": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Service Errors",
+            "name": "A",
+            "query": "sum(temporal_service_errors)"
+          },
+          {
+            "disabled": false,
+            "legend": "Service Errors by Type",
+            "name": "B",
+            "query": "sum(temporal_service_error_with_type)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Service Errors",
+      "yAxisUnit": "none"
+    },
+    {
+      "bucketCount": 30,
+      "bucketWidth": 0,
+      "columnUnits": {},
+      "description": "Number of task slots currently in use by workers",
+      "fillSpans": false,
+      "id": "worker-slots",
+      "isStacked": false,
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "aggregateAttribute": {
+                "dataType": "float64",
+                "id": "temporal_worker_task_slots_available--float64----true",
+                "isColumn": true,
+                "isJSON": false,
+                "key": "temporal_worker_task_slots_available",
+                "type": ""
+              },
+              "aggregateOperator": "",
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "filters": {
+                "items": [],
+                "op": "AND"
+              },
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "service_name--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "service_name",
+                  "type": "tag"
+                }
+              ],
+              "having": [],
+              "legend": "{{service_name}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "reduceTo": "avg",
+              "spaceAggregation": "sum",
+              "stepInterval": 60,
+              "timeAggregation": ""
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "327c2fa0-e6fe-4d52-af68-7f39a6b8d2d9",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Worker task slots usage",
+            "name": "A",
+            "query": "sum(temporal_worker_task_slots_used) by (worker_type)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "stackedBarChart": false,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Worker Task Slot Usage",
+      "yAxisUnit": "none"
+    },
+    {
+      "bucketCount": 30,
+      "bucketWidth": 0,
+      "columnUnits": {},
+      "description": "Total number of task slots available for processing tasks",
+      "fillSpans": false,
+      "id": "java-metrics",
+      "isStacked": false,
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "graph",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "aggregateAttribute": {
+                "dataType": "float64",
+                "id": "jvm_memory_used_bytes--float64----true",
+                "isColumn": true,
+                "isJSON": false,
+                "key": "jvm_memory_used_bytes",
+                "type": ""
+              },
+              "aggregateOperator": "",
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "filters": {
+                "items": [],
+                "op": "AND"
+              },
+              "functions": [],
+              "groupBy": [
+                {
+                  "dataType": "string",
+                  "id": "area--string--tag--false",
+                  "isColumn": false,
+                  "isJSON": false,
+                  "key": "area",
+                  "type": "tag"
+                }
+              ],
+              "having": [],
+              "legend": "{{area}}",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "reduceTo": "sum",
+              "spaceAggregation": "sum",
+              "stepInterval": 60,
+              "timeAggregation": ""
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "e0dc6dbf-71d6-4c07-a732-17719d3f8f90",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "Worker task slots availability",
+            "name": "A",
+            "query": "sum(temporal_worker_task_slots_available) by (worker_type)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "selectedLogFields": [],
+      "selectedTracesFields": [],
+      "softMax": 0,
+      "softMin": 0,
+      "stackedBarChart": false,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Worker task slots availability",
+      "yAxisUnit": "none"
+    },
+    {
+      "bucketCount": 30,
+      "bucketWidth": 0,
+      "columnUnits": {},
+      "description": "Workflow execution time in seconds",
+      "fillSpans": false,
+      "id": "badcfff9-9671-49f6-8a69-a99bb3152359",
+      "isStacked": false,
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "bar",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "aggregateAttribute": {
+                "dataType": "",
+                "id": "------false",
+                "isColumn": false,
+                "isJSON": false,
+                "key": "",
+                "type": ""
+              },
+              "aggregateOperator": "count",
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "filters": {
+                "items": [],
+                "op": "AND"
+              },
+              "functions": [],
+              "groupBy": [],
+              "having": [],
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "reduceTo": "avg",
+              "spaceAggregation": "sum",
+              "stepInterval": 60,
+              "timeAggregation": "rate"
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "d59e9b87-9af1-4385-a71f-32b2210df962",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "{{workflow_type}} ≤ {{le}}s",
+            "name": "A",
+            "query": "sum(workflow_duration_seconds_bucket{le=~\"25|100|1000|5000\"}) by (le, workflow_type)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [
+        {
+          "dataType": "string",
+          "id": "serviceName--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "serviceName",
+          "type": "tag"
+        },
+        {
+          "dataType": "string",
+          "id": "name--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "name",
+          "type": "tag"
+        },
+        {
+          "dataType": "float64",
+          "id": "durationNano--float64--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "durationNano",
+          "type": "tag"
+        },
+        {
+          "dataType": "string",
+          "id": "httpMethod--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "httpMethod",
+          "type": "tag"
+        },
+        {
+          "dataType": "string",
+          "id": "responseStatusCode--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "responseStatusCode",
+          "type": "tag"
+        }
+      ],
+      "softMax": 0,
+      "softMin": 0,
+      "stackedBarChart": false,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Workflow Duration Distribution",
+      "yAxisUnit": "s"
+    },
+    {
+      "bucketCount": 30,
+      "bucketWidth": 0,
+      "columnUnits": {},
+      "description": "Activity execution time in seconds",
+      "fillSpans": false,
+      "id": "586b688a-563d-4865-9dc5-21ef887ab247",
+      "isStacked": false,
+      "mergeAllActiveQueries": false,
+      "nullZeroValues": "zero",
+      "opacity": "1",
+      "panelTypes": "bar",
+      "query": {
+        "builder": {
+          "queryData": [
+            {
+              "aggregateAttribute": {
+                "dataType": "",
+                "id": "------false",
+                "isColumn": false,
+                "isJSON": false,
+                "key": "",
+                "type": ""
+              },
+              "aggregateOperator": "count",
+              "dataSource": "metrics",
+              "disabled": false,
+              "expression": "A",
+              "filters": {
+                "items": [],
+                "op": "AND"
+              },
+              "functions": [],
+              "groupBy": [],
+              "having": [],
+              "legend": "",
+              "limit": null,
+              "orderBy": [],
+              "queryName": "A",
+              "reduceTo": "avg",
+              "spaceAggregation": "sum",
+              "stepInterval": 60,
+              "timeAggregation": "rate"
+            }
+          ],
+          "queryFormulas": []
+        },
+        "clickhouse_sql": [
+          {
+            "disabled": false,
+            "legend": "",
+            "name": "A",
+            "query": ""
+          }
+        ],
+        "id": "ffbd27e1-5fc3-4526-b6e5-ff874f9e79d9",
+        "promql": [
+          {
+            "disabled": false,
+            "legend": "{{workflow_type}} activity (≤{{le}}s)",
+            "name": "A",
+            "query": "sum(workflow_duration_seconds_bucket{le=~\"25|100|1000|5000\"}) by (le, workflow_type)"
+          }
+        ],
+        "queryType": "promql"
+      },
+      "selectedLogFields": [
+        {
+          "dataType": "string",
+          "name": "body",
+          "type": ""
+        },
+        {
+          "dataType": "string",
+          "name": "timestamp",
+          "type": ""
+        }
+      ],
+      "selectedTracesFields": [
+        {
+          "dataType": "string",
+          "id": "serviceName--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "serviceName",
+          "type": "tag"
+        },
+        {
+          "dataType": "string",
+          "id": "name--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "name",
+          "type": "tag"
+        },
+        {
+          "dataType": "float64",
+          "id": "durationNano--float64--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "durationNano",
+          "type": "tag"
+        },
+        {
+          "dataType": "string",
+          "id": "httpMethod--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "httpMethod",
+          "type": "tag"
+        },
+        {
+          "dataType": "string",
+          "id": "responseStatusCode--string--tag--true",
+          "isColumn": true,
+          "isJSON": false,
+          "key": "responseStatusCode",
+          "type": "tag"
+        }
+      ],
+      "softMax": 0,
+      "softMin": 0,
+      "stackedBarChart": false,
+      "thresholds": [],
+      "timePreferance": "GLOBAL_TIME",
+      "title": "Activity Duration Distribution",
+      "yAxisUnit": "none"
+    }
+  ]
+}

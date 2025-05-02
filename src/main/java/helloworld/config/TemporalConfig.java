@@ -11,9 +11,6 @@ import java.io.InputStream;
 import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Date;
 
 public class TemporalConfig {
     private static final Logger logger = Logger.getLogger(TemporalConfig.class.getName());

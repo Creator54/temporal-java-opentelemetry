@@ -5,8 +5,7 @@ import helloworld.config.Instrumentation;
 import helloworld.workflows.impl.HelloWorldWorkflowImpl;
 import io.temporal.worker.Worker;
 import io.temporal.worker.WorkerFactory;
-import io.temporal.worker.WorkerFactoryOptions;
-import io.temporal.serviceclient.WorkflowServiceStubsOptions;
+import io.temporal.worker.WorkerOptions;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -17,23 +16,23 @@ public class HelloWorldWorker implements AutoCloseable {
     private volatile boolean isShuttingDown = false;
 
     public HelloWorldWorker() {
-        Instrumentation.initializeTelemetry();
-
-        WorkflowServiceStubsOptions stubOptions = WorkflowServiceStubsOptions.newBuilder()
-            .setMetricsScope(Instrumentation.getMetricsScope())
-            .build();
-
-        WorkerFactoryOptions factoryOptions = WorkerFactoryOptions.newBuilder()
-            .setWorkerInterceptors(Instrumentation.getWorkerInterceptor())
-            .build();
-
+        // Use the centralized telemetry initialization and configuration
         this.factory = WorkerFactory.newInstance(
-            TemporalConfig.getWorkflowClient(stubOptions),
-            factoryOptions
+            TemporalConfig.getWorkflowClient(), 
+            Instrumentation.getWorkerFactoryOptions()
         );
+        
+        // Configure worker with task slots
+        WorkerOptions workerOptions = WorkerOptions.newBuilder()
+            .setMaxConcurrentWorkflowTaskExecutionSize(Instrumentation.MAX_WORKFLOW_TASK_SLOTS)
+            .setMaxConcurrentActivityExecutionSize(Instrumentation.MAX_ACTIVITY_TASK_SLOTS)
+            .build();
 
-        this.worker = factory.newWorker(TemporalConfig.getTaskQueue());
-        this.worker.registerWorkflowImplementationTypes(HelloWorldWorkflowImpl.class);
+        this.worker = factory.newWorker(TemporalConfig.getTaskQueue(), workerOptions);
+        worker.registerWorkflowImplementationTypes(HelloWorldWorkflowImpl.class);
+
+        // Record worker starts
+        Instrumentation.recordWorkerStart("WorkflowWorker");
         this.shutdownLatch = new CountDownLatch(1);
     }
 
@@ -42,8 +41,6 @@ public class HelloWorldWorker implements AutoCloseable {
             factory.start();
             System.out.println("Worker started for task queue: " + TemporalConfig.getTaskQueue());
             System.out.println("Metrics and traces are being exported to SigNoz");
-            
-            Instrumentation.registerDashboardMetrics();
             
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 if (!isShuttingDown) {
@@ -69,6 +66,7 @@ public class HelloWorldWorker implements AutoCloseable {
 
         try {
             System.out.println("Initiating graceful shutdown...");
+            
             factory.shutdown();
             factory.awaitTermination(3, TimeUnit.SECONDS);
             

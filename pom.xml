@@ -45,16 +45,6 @@
             <artifactId>opentelemetry-sdk-metrics</artifactId>
             <version>${opentelemetry.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-extension-trace-propagators</artifactId>
-            <version>${opentelemetry.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-            <version>${opentelemetry.version}</version>
-        </dependency>
 
         <!-- OpenTracing Dependencies -->
         <dependency>
